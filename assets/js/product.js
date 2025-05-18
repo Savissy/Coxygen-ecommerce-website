@@ -156,7 +156,7 @@ function populateCategories(products) {
 }
 
 function checkout() {
-    alert('click "ok" to proceed with payments');
+    alert('Due to market volatility send current ADA equivalent of total!');
     cart = [];
     updateCart();
     saveCartToLocalStorage();

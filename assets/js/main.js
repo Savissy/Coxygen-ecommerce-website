@@ -15,7 +15,7 @@ const connet = async () => {
     const walletData = await walletEssentials(wallet,Cip30Wallet,WalletHelper,Value, txPrerequisites.minAda,j);j.log({walletData});
     const balancelovelace = await adaFunc(walletData,j);j.log({balancelovelace});
     const ada = (balancelovelace/1000000).toLocaleString();j.log({ada})
-    document.getElementById('connect-wallet-btn').innerText = `Bal: ${ada}₳`;
+    document.getElementById('connect-wallet-btn').innerText = `Connected`;
 }
 
 document.getElementById('connect-wallet-btn').addEventListener('click', async (event) => {
