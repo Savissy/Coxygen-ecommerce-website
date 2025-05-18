@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coxygen Global</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap');
+    </style>
+    <link rel="stylesheet" href="./assets/css/checkout.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script  type="module" type="text/javascript">
+        
+    import{
+        bytesToHex,Cip30Wallet,WalletHelper,TxOutput,
+        Assets,bytesToText,hexToBytes,AssetClass,
+        Tx,Address, NetworkParams, Value,MintingPolicyHash,
+        Program,ByteArrayData,ConstrData,NetworkEmulator,PubKey,
+        textToBytes,Datum,ListData,IntData
+    } from "./js/helios.js";
+
+import{
+    txPrerequisites,init,walletEssentials,txFunc,hlib,hexToTex,shortAddressFunc, 
+    addressFunc, adaFunc, assetFunc,getAssets,sendADA,sendAssets,
+    showWalletData,mint,txDeadLine,baseAddressPKH,submitTx, getAssetsFromValue
+} from "./js/coxylib.js";
+
+import{opt,j} from "./js/jimba.js";
+
+opt._R = 1;//run all tests, checks and logs
+opt._O = 1; //run only logs
+opt._M = 1; //show stake frames of logs
+opt._T = 1; //run tests
+opt._Ob = 0; //show tests stack frames
+opt._FailsOnly = 0; //run only failed tests
+opt._F = 0;  //show functions that are marked with j.s() and j.e() for function profiling
+opt._tNo = 1; //this is the number of times testPack will run
+
+const domGetId = (id) =>{
+    return document.getElementById(id);
+}
+
+document.getElementById("clearForm").addEventListener('click',()=>{
+    domument.getElementById("sendAdaForm").reset();
+});
+
+const wallet = await init(j);
+const walletData = await walletEssentials(wallet,Cip30Wallet,WalletHelper,Value,txPrerequisites.minAda,j);
+j.log({walletData});
+
+const displayLovelace = await adaFunc(walletData,j);
+j.log({displayLovelace});
+
+const displayAda = (displayLovelace /1000000).toLocaleString();;
+j.log({displayAda});
+
+document.getElementById("adaBalance").innerHTML = "₳ " +displayAda;
+
+document.getElementById("sendAdaForm").addEventListener("submit", async(event)=>{
+    event.preventDefault();
+
+    const recipientAddress = addr_test1qpjmef8lnqmjq38ckr6weaatpmxdew9v25tvmkuxunn6depa0ya7lrwn8h84yfa2dlfdv3qgppfnkz3lgulk8d9lmawqcwcv20;
+    const adaAmount = document.getElementById("amount").value;
+
+    await sendADA(recipientAddress, adaAmount);
+});
+
+
+    </script>
+
+</head>
+<body>
+    <div class="main-container">
+         <div class="container" >
+            <img id="checkout-image" src="./assets/images/logo/coxygen.jpeg" alt="Coxygen logo">
+            <div class="balance-card">
+                 <h1 class="league-spartan-title">Cardano Payment Gateway</h1>
+             </div>
+         </div><br>
+        <form id="sendAdaForm">
+            <div class="container">
+             <div class="balance-card">
+                 <div class="league-spartan-regular">Available ADA Balance:</div>
+                 <div class="league-spartan-regular" id="adaBalance"></div>
+             </div>
+             <div class="input-group">
+                 <label for="amount">Ada:</label>
+                 <div class="input-icon-group">
+                     <input type="number" id="amount" placeholder="₳  Enter amount" class="league-spartan-input">
+                 </div>
+             </div>
+             <!-- <div class="input-group">
+                 <label for="recipient">Recipient Address:</label>
+                 <div class="input-icon-group">
+                     <input type="text" id="recipient" placeholder="Enter recipient address"class="league-spartan-input">
+                 </div> -->
+             </div>
+             <div class="button-group">
+                 <button class="send-button league-spartan-send-button" id="sendADA" type="submit">Send</button>
+                 <button class="reset-button league-spartan-reset-button" id="clearForm">Clear</button>
+             </div>
+             <div class="terms">
+                 Coxygen Global@2024 By Mosa
+             </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+ 
