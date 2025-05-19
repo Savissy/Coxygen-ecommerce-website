@@ -16,6 +16,7 @@ const connet = async () => {
     const balancelovelace = await adaFunc(walletData,j);j.log({balancelovelace});
     const ada = (balancelovelace/1000000).toLocaleString();j.log({ada})
     document.getElementById('connect-wallet-btn').innerText = `Connected`;
+    window.location.href = "product.html";
 }
 
 document.getElementById('connect-wallet-btn').addEventListener('click', async (event) => {

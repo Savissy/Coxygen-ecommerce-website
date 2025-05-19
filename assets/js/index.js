@@ -28,7 +28,7 @@ const domGetId = (id) =>{
 }
 
 domGetId("clearForm").addEventListener('click',()=>{
-    domGetId("sendAdaForm").reset();
+    domGetId ("sendAdaForm").reset();
 });
 
 const wallet = await init(j);
