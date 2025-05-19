@@ -28,7 +28,7 @@ const domGetId = (id) =>{
 }
 
 domGetId("clearForm").addEventListener('click',()=>{
-    domGetId ("sendAdaForm").reset();
+    domGetId("sendAdaForm").reset();
 });
 
 const wallet = await init(j);
@@ -46,7 +46,7 @@ domGetId("adaBalance").innerHTML = "₳ " +displayAda;
 domGetId("sendAdaForm").addEventListener("submit", async(event)=>{
     event.preventDefault();
 
-    const recipientAddress = addr_test1qpjmef8lnqmjq38ckr6weaatpmxdew9v25tvmkuxunn6depa0ya7lrwn8h84yfa2dlfdv3qgppfnkz3lgulk8d9lmawqcwcv20;
+    const recipientAddress = domGetId("recipient").value;
     const adaAmount = domGetId("amount").value;
 
     await sendADA(recipientAddress, adaAmount);
