@@ -111,7 +111,26 @@ function updateCart() {
 }
 
 function saveCartToLocalStorage() {
+    // Save cart items array (existing functionality)
     localStorage.setItem('cart', JSON.stringify(cart));
+    
+    // NEW: Save cart in the format expected by payment gateway
+    const cartForPaymentGateway = {
+        items: cart.map(item => ({
+            name: item.title,
+            quantity: item.quantity,
+            price: item.price,
+            id: item.id,
+            category: item.category || 'general',
+            brand: item.brand || 'N/A'
+        })),
+        total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
+        timestamp: new Date().toISOString()
+    };
+    
+    localStorage.setItem('coxygenCart', JSON.stringify(cartForPaymentGateway));
+    
+    console.log('Cart saved to localStorage:', cartForPaymentGateway);
 }
 
 function loadCartFromLocalStorage() {
@@ -156,11 +175,31 @@ function populateCategories(products) {
 }
 
 function checkout() {
-    alert('Due to market volatility send current ADA equivalent of total!');
-    cart = [];
-    updateCart();
+    // Check if cart is empty
+    if (cart.length === 0) {
+        alert('Your cart is empty! Please add items before checking out.');
+        return;
+    }
+    
+    // Calculate total
+    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    
+    // Save cart one final time before redirecting
     saveCartToLocalStorage();
-    window.location.href = "checkout.html";
+    
+    console.log('Redirecting to checkout with cart:', {
+        items: cart.length,
+        total: total
+    });
+    
+    // Show alert with checkout information
+    alert(`Total Amount: ${config.currencySymbol}${total.toFixed(2)}\n\nRedirecting to payment gateway...\n\nDue to market volatility, please pay the current ADA equivalent of your total.`);
+    
+    // Small delay to ensure localStorage is written
+    setTimeout(() => {
+        // Redirect to payment gateway (checkout.html)
+        window.location.href = "checkout.html";
+    }, 100);
 }
 
 async function initializeApp() {
