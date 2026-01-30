@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Escrow dApp</title>
+  <title>Coxygen Payment Gateway</title>
   <style>
     * {
       margin: 0;
@@ -10,16 +10,112 @@
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+      background: #f5f7fa;
       min-height: 100vh;
-      padding: 40px 20px;
-      color: #fff;
+      padding: 0;
+      color: #1a1a1a;
     }
 
-    .container {
-      max-width: 900px;
+    /* Header Section */
+    .header {
+      background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+      padding: 24px 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      animation: slideDown 0.4s ease-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .header-content {
+      max-width: 1200px;
       margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    h1 {
+      font-size: 1.8em;
+      font-weight: 600;
+      color: white;
+      letter-spacing: -0.5px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    #init {
+      padding: 12px 28px;
+      background: white;
+      color: #ff6b35;
+      border: none;
+      border-radius: 8px;
+      font-size: 1em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      }
+      50% {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+      }
+    }
+
+    #init:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    #init:active {
+      transform: translateY(0);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .back-link:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateX(-3px);
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
       animation: fadeIn 0.6s ease-out;
     }
 
@@ -34,75 +130,200 @@
       }
     }
 
-    h1 {
-      text-align: center;
-      font-size: 2.5em;
-      margin-bottom: 40px;
-      background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: slideDown 0.6s ease-out;
+    /* Layout Grid */
+    .payment-layout {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 30px;
+      align-items: start;
     }
 
-    @keyframes slideDown {
+    /* Cart Summary (Sidebar) */
+    .cart-summary {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 28px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 20px;
+      animation: slideInRight 0.5s ease-out;
+    }
+
+    @keyframes slideInRight {
       from {
         opacity: 0;
-        transform: translateY(-30px);
+        transform: translateX(30px);
       }
       to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateX(0);
       }
     }
 
-    #init {
-      display: block;
-      width: 100%;
-      max-width: 300px;
-      margin: 0 auto 40px;
-      padding: 16px 32px;
-      background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
-      color: white;
-      border: none;
-      border-radius: 12px;
-      font-size: 1.1em;
+    .cart-summary h2 {
+      color: #1a1a1a;
+      margin-bottom: 20px;
+      font-size: 1.4em;
       font-weight: 600;
-      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #f3f4f6;
+    }
+
+    .cart-items {
+      margin-bottom: 20px;
+      max-height: 400px;
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+
+    .cart-items::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .cart-items::-webkit-scrollbar-track {
+      background: #f3f4f6;
+      border-radius: 10px;
+    }
+
+    .cart-items::-webkit-scrollbar-thumb {
+      background: #ff8c42;
+      border-radius: 10px;
+    }
+
+    .cart-item {
+      background: #fafafa;
+      border: 1px solid #f0f0f0;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: all 0.2s ease;
+    }
+
+    .cart-item:hover {
+      border-color: #ff8c42;
+      box-shadow: 0 2px 8px rgba(255, 140, 66, 0.1);
+    }
+
+    .item-info {
+      flex: 1;
+    }
+
+    .item-name {
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 6px;
+      font-size: 0.95em;
+    }
+
+    .item-details {
+      font-size: 0.85em;
+      color: #6b7280;
+    }
+
+    .item-price {
+      font-size: 1em;
+      font-weight: 600;
+      color: #ff6b35;
+      margin-top: 8px;
+    }
+
+    .cart-totals {
+      background: #fafafa;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 16px;
+    }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      font-size: 0.95em;
+      color: #4b5563;
+    }
+
+    .total-row.grand-total {
+      border-top: 2px solid #e5e7eb;
+      margin-top: 10px;
+      padding-top: 15px;
+      font-size: 1.3em;
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+
+    .total-row.grand-total .amount {
+      color: #ff6b35;
+    }
+
+    .volatility-notice {
+      background: linear-gradient(135deg, #fff5f0 0%, #ffe9dc 100%);
+      border: 1px solid #ffd4ba;
+      border-left: 4px solid #ff8c42;
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .volatility-notice-icon {
+      font-size: 1.3em;
+      color: #ff8c42;
+      min-width: 24px;
+    }
+
+    .volatility-notice-content {
+      flex: 1;
+    }
+
+    .volatility-notice-title {
+      font-weight: 600;
+      color: #ff6b35;
+      margin-bottom: 6px;
+      font-size: 0.9em;
+    }
+
+    .volatility-notice-text {
+      color: #6b4423;
+      line-height: 1.5;
+      font-size: 0.85em;
+    }
+
+    /* Payment Forms */
+    .payment-section {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 28px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
       transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
-      animation: pulse 2s ease-in-out infinite;
+      animation: slideInLeft 0.5s ease-out backwards;
     }
 
-    @keyframes pulse {
-      0%, 100% {
-        box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
-      }
-      50% {
-        box-shadow: 0 4px 25px rgba(255, 107, 53, 0.5);
-      }
+    .card:nth-child(1) {
+      animation-delay: 0.1s;
     }
 
-    #init:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+    .card:nth-child(2) {
+      animation-delay: 0.2s;
     }
 
-    #init:active {
-      transform: translateY(0);
+    .card:nth-child(3) {
+      animation-delay: 0.3s;
     }
 
-    .cart-summary {
-      background: rgba(45, 45, 45, 0.9);
-      border: 2px solid rgba(255, 107, 53, 0.4);
-      border-radius: 16px;
-      padding: 30px;
-      margin-bottom: 30px;
-      backdrop-filter: blur(10px);
-      animation: cardSlide 0.6s ease-out;
-    }
-
-    @keyframes cardSlide {
+    @keyframes slideInLeft {
       from {
         opacity: 0;
         transform: translateX(-30px);
@@ -113,213 +334,87 @@
       }
     }
 
-    .cart-summary h2 {
-      color: #ff8c42;
+    .card:hover {
+      border-color: #ff8c42;
+      box-shadow: 0 4px 12px rgba(255, 140, 66, 0.15);
+    }
+
+    .card h2 {
+      color: #1a1a1a;
       margin-bottom: 20px;
-      font-size: 1.8em;
+      font-size: 1.25em;
       font-weight: 600;
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
-    .cart-items {
-      margin-bottom: 20px;
+    .card h2::before {
+      content: '';
+      width: 4px;
+      height: 24px;
+      background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+      border-radius: 2px;
     }
 
-    .cart-item {
-      background: rgba(26, 26, 26, 0.5);
-      border: 1px solid rgba(255, 107, 53, 0.2);
-      border-radius: 10px;
-      padding: 15px;
-      margin-bottom: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: all 0.3s ease;
+    .form-group {
+      margin-bottom: 16px;
     }
 
-    .cart-item:hover {
-      border-color: rgba(255, 107, 53, 0.4);
-      transform: translateX(5px);
-    }
-
-    .item-info {
-      flex: 1;
-    }
-
-    .item-name {
-      font-weight: 600;
-      color: #fff;
-      margin-bottom: 5px;
-    }
-
-    .item-details {
-      font-size: 0.9em;
-      color: rgba(255, 255, 255, 0.7);
-    }
-
-    .item-price {
-      font-size: 1.1em;
-      font-weight: 600;
-      color: #ff8c42;
-    }
-
-    .cart-totals {
-      background: rgba(26, 26, 26, 0.6);
-      border-radius: 10px;
-      padding: 20px;
-      margin-top: 20px;
-    }
-
-    .total-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 0;
-      font-size: 1.1em;
-    }
-
-    .total-row.grand-total {
-      border-top: 2px solid rgba(255, 107, 53, 0.5);
-      margin-top: 10px;
-      padding-top: 15px;
-      font-size: 1.4em;
-      font-weight: 700;
-      color: #ff8c42;
-    }
-
-    .volatility-notice {
-      background: linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(255, 140, 66, 0.15) 100%);
-      border: 2px solid rgba(255, 107, 53, 0.4);
-      border-radius: 12px;
-      padding: 20px;
-      margin-top: 20px;
-      display: flex;
-      align-items: flex-start;
-      gap: 15px;
-      animation: slideIn 0.6s ease-out 0.3s backwards;
-    }
-
-    @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .volatility-notice-icon {
-      font-size: 1.5em;
-      color: #ff8c42;
-      min-width: 30px;
-    }
-
-    .volatility-notice-content {
-      flex: 1;
-    }
-
-    .volatility-notice-title {
-      font-weight: 600;
-      color: #ff8c42;
+    label {
+      display: block;
       margin-bottom: 8px;
-      font-size: 1.1em;
-    }
-
-    .volatility-notice-text {
-      color: rgba(255, 255, 255, 0.9);
-      line-height: 1.6;
-      font-size: 0.95em;
-    }
-
-    .ada-amount {
-      display: inline-block;
-      background: rgba(255, 107, 53, 0.2);
-      padding: 4px 12px;
-      border-radius: 6px;
-      font-weight: 600;
-      color: #ff8c42;
-      margin: 5px 0;
-    }
-
-    .card {
-      background: rgba(45, 45, 45, 0.8);
-      border: 2px solid rgba(255, 107, 53, 0.3);
-      border-radius: 16px;
-      padding: 30px;
-      margin-bottom: 30px;
-      backdrop-filter: blur(10px);
-      transition: all 0.3s ease;
-      animation: cardSlide 0.6s ease-out backwards;
-    }
-
-    .card:nth-child(4) {
-      animation-delay: 0.1s;
-    }
-
-    .card:nth-child(5) {
-      animation-delay: 0.2s;
-    }
-
-    .card:nth-child(6) {
-      animation-delay: 0.3s;
-    }
-
-    .card:hover {
-      border-color: rgba(255, 107, 53, 0.6);
-      box-shadow: 0 8px 30px rgba(255, 107, 53, 0.2);
-      transform: translateY(-4px);
-    }
-
-    h2 {
-      color: #ff8c42;
-      margin-bottom: 20px;
-      font-size: 1.5em;
-      font-weight: 600;
+      color: #4b5563;
+      font-size: 0.9em;
+      font-weight: 500;
     }
 
     input {
       width: 100%;
-      padding: 14px 18px;
-      margin-bottom: 16px;
-      background: rgba(26, 26, 26, 0.6);
-      border: 2px solid rgba(255, 107, 53, 0.3);
-      border-radius: 10px;
-      color: #fff;
+      padding: 12px 16px;
+      background: #fafafa;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      color: #1a1a1a;
       font-size: 1em;
       transition: all 0.3s ease;
       outline: none;
     }
 
     input::placeholder {
-      color: rgba(255, 255, 255, 0.5);
+      color: #9ca3af;
     }
 
     input:focus {
       border-color: #ff8c42;
+      background: white;
       box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.1);
     }
 
-    button:not(#init) {
+    .button-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    button:not(#init):not(.back-link) {
       padding: 12px 24px;
       background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
       color: white;
       border: none;
-      border-radius: 10px;
-      font-size: 1em;
+      border-radius: 8px;
+      font-size: 0.95em;
       font-weight: 500;
       cursor: pointer;
       transition: all 0.3s ease;
-      margin-right: 12px;
-      margin-bottom: 12px;
-      box-shadow: 0 4px 12px rgba(255, 107, 53, 0.2);
+      box-shadow: 0 2px 8px rgba(255, 107, 53, 0.2);
+      flex: 1;
+      min-width: 140px;
     }
 
     button:not(#init):hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(255, 107, 53, 0.3);
+      box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
     }
 
     button:not(#init):active {
@@ -328,24 +423,36 @@
 
     #lockFunds {
       width: 100%;
-      margin-right: 0;
       padding: 14px;
       font-size: 1.05em;
+      font-weight: 600;
     }
 
+    /* Action Icons */
+    .icon-check::before { content: '✓ '; }
+    .icon-refund::before { content: '↺ '; }
+    .icon-claim::before { content: '💰 '; }
+
+    #confirmDelivery::before { content: '✓ '; }
+    #refundBuyer::before { content: '↺ '; }
+    #claimFunds::before { content: '💰 '; }
+
+    /* Log Section */
     #log {
-      background: rgba(26, 26, 26, 0.8);
-      border: 2px solid rgba(255, 107, 53, 0.3);
+      background: white;
+      border: 1px solid #e5e7eb;
       border-radius: 12px;
       padding: 20px;
-      color: #ff8c42;
-      font-size: 0.9em;
+      color: #ff6b35;
+      font-size: 0.85em;
       line-height: 1.6;
       max-height: 300px;
       overflow-y: auto;
       white-space: pre-wrap;
       word-wrap: break-word;
-      font-family: 'Courier New', monospace;
+      font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      margin-top: 24px;
     }
 
     #log::-webkit-scrollbar {
@@ -353,7 +460,7 @@
     }
 
     #log::-webkit-scrollbar-track {
-      background: rgba(26, 26, 26, 0.4);
+      background: #f3f4f6;
       border-radius: 10px;
     }
 
@@ -365,109 +472,211 @@
     .empty-cart {
       text-align: center;
       padding: 40px 20px;
-      color: rgba(255, 255, 255, 0.6);
-      font-size: 1.1em;
+      color: #9ca3af;
+      font-size: 1em;
+    }
+
+    .empty-cart p {
+      margin-bottom: 20px;
+    }
+
+    .empty-cart a {
+      display: inline-block;
+      padding: 12px 28px;
+      background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%);
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .empty-cart a:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+    }
+
+    /* Security Badge */
+    .security-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px;
+      background: #f0fdf4;
+      border: 1px solid #86efac;
+      border-radius: 8px;
+      margin-top: 20px;
+      font-size: 0.85em;
+      color: #15803d;
+    }
+
+    .security-badge::before {
+      content: '🔒';
+      font-size: 1.2em;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .payment-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .cart-summary {
+        position: relative;
+        top: 0;
+        order: -1;
+      }
     }
 
     @media (max-width: 600px) {
+      .header-content {
+        justify-content: center;
+        text-align: center;
+      }
+
       h1 {
-        font-size: 2em;
+        font-size: 1.5em;
+        width: 100%;
+      }
+
+      .header-actions {
+        width: 100%;
+        justify-content: center;
       }
 
       .card {
         padding: 20px;
       }
 
+      .button-group {
+        flex-direction: column;
+      }
+
       button:not(#init) {
         width: 100%;
-        margin-right: 0;
-      }
-
-      .cart-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-      }
-
-      .total-row {
-        font-size: 1em;
       }
 
       .total-row.grand-total {
-        font-size: 1.2em;
+        font-size: 1.1em;
       }
+    }
+
+    /* Loading Animation */
+    @keyframes shimmer {
+      0% {
+        background-position: -468px 0;
+      }
+      100% {
+        background-position: 468px 0;
+      }
+    }
+
+    .loading {
+      animation: shimmer 1.5s infinite;
+      background: linear-gradient(to right, #f0f0f0 8%, #f8f8f8 18%, #f0f0f0 33%);
+      background-size: 800px 104px;
     }
   </style>
 </head>
 <body>
 
-<div class="container">
-  <h1>Coxygen Payment Gateway</h1>
-
-  <button id="init">Connect Wallet</button>
-
-  <!-- Back to Store Button -->
-  <div style="text-align: center; margin-bottom: 20px;">
-    <a href="product.html" style="display: inline-block; padding: 10px 24px; background: rgba(255, 107, 53, 0.2); color: #ff8c42; border: 2px solid rgba(255, 107, 53, 0.5); border-radius: 10px; text-decoration: none; font-weight: 500; transition: all 0.3s ease;">
-      ← Back to Store
-    </a>
+<!-- Header -->
+<div class="header">
+  <div class="header-content">
+    <h1>🛡️ Coxygen Payment Gateway</h1>
+    <div class="header-actions">
+      <a href="product.html" class="back-link">
+        ← Back to Store
+      </a>
+      <button id="init">Connect Wallet</button>
+    </div>
   </div>
+</div>
 
-  <!-- Cart Summary Section -->
-  <div class="cart-summary">
-    <h2>
-      <span>🛒</span>
-      Cart Summary
-    </h2>
+<div class="container">
+  <div class="payment-layout">
     
-    <div id="cartItemsContainer" class="cart-items">
-      <!-- Cart items will be populated by JavaScript -->
-      <div class="empty-cart">Your cart is empty</div>
+    <!-- Payment Forms Section -->
+    <div class="payment-section">
+      
+      <!-- Lock Funds Card -->
+      <div class="card">
+        <h2>Payment Details</h2>
+        <div class="form-group">
+          <label for="amount">Amount (ADA)</label>
+          <input id="amount" type="number" step="0.01" placeholder="Enter amount in ADA">
+        </div>
+        <button id="lockFunds">🔒 Lock Funds & Complete Payment</button>
+        
+        <div class="security-badge">
+          Secured by Cardano Blockchain
+        </div>
+      </div>
+
+      <!-- Buyer Actions Card -->
+      <div class="card">
+        <h2>Buyer Actions</h2>
+        <p style="color: #6b7280; font-size: 0.9em; margin-bottom: 16px;">
+          Confirm delivery or request a refund after order completion
+        </p>
+        <div class="button-group">
+          <button id="confirmDelivery">Confirm Delivery</button>
+          <button id="refundBuyer">Request Refund</button>
+        </div>
+      </div>
+
+      <!-- Seller Actions Card -->
+      <div class="card">
+        <h2>Seller Actions</h2>
+        <p style="color: #6b7280; font-size: 0.9em; margin-bottom: 16px;">
+          Claim funds after successful delivery confirmation
+        </p>
+        <button id="claimFunds" style="width: 100%;">Claim Funds</button>
+      </div>
+
+      <!-- Transaction Log -->
+      <pre id="log"></pre>
     </div>
 
-    <div class="cart-totals">
-      <div class="total-row">
-        <span>Subtotal:</span>
-        <span id="subtotal">$0.00</span>
+    <!-- Cart Summary Sidebar -->
+    <div class="cart-summary">
+      <h2>
+        <span>🛒</span>
+        Order Summary
+      </h2>
+      
+      <div id="cartItemsContainer" class="cart-items">
+        <div class="empty-cart">
+          <p>Your cart is empty</p>
+          <a href="index.html">Browse Products</a>
+        </div>
       </div>
-      <div class="total-row grand-total">
-        <span>Total (USD):</span>
-        <span id="cartTotal">$0.00</span>
-      </div>
-    </div>
 
-    <div class="volatility-notice">
-      <div class="volatility-notice-icon">⚠️</div>
-      <div class="volatility-notice-content">
-        <div class="volatility-notice-title">Market Volatility Notice</div>
-        <div class="volatility-notice-text">
-          Due to cryptocurrency market volatility, the ADA equivalent of your total may fluctuate. 
-          Please pay the current ADA equivalent. Prices were pegged at 1 ADA to $1
-          <!--<div class="ada-amount" id="adaEquivalent">0 ADA</div>-->
-          <!--<small style="display: block; margin-top: 8px; opacity: 0.8;">Exchange rate is updated in real-time</small>-->
+      <div class="cart-totals">
+        <div class="total-row">
+          <span>Subtotal:</span>
+          <span id="subtotal">$0.00</span>
+        </div>
+        <div class="total-row grand-total">
+          <span>Total:</span>
+          <span class="amount" id="cartTotal">$0.00</span>
+        </div>
+      </div>
+
+      <div class="volatility-notice">
+        <div class="volatility-notice-icon">⚠️</div>
+        <div class="volatility-notice-content">
+          <div class="volatility-notice-title">Market Volatility Notice</div>
+          <div class="volatility-notice-text">
+            Due to cryptocurrency market volatility, the ADA equivalent of your total may fluctuate. 
+            Please pay the current ADA equivalent. Prices were pegged at 1 ADA to $1
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="card">
-    <h2>Lock Funds (Buyer)</h2>
-    <input id="amount" placeholder="Amount (ADA)">
-    <button id="lockFunds">Lock Funds</button>
   </div>
-
-  <div class="card">
-    <h2>Buyer Actions</h2>
-    <button id="confirmDelivery">Confirm Delivery</button>
-    <button id="refundBuyer">Refund Buyer</button>
-  </div>
-
-  <div class="card">
-    <h2>Seller Actions</h2>
-    <button id="claimFunds">Claim Funds</button>
-  </div>
-
-  <pre id="log"></pre>
 </div>
 
 <script type="module">
@@ -540,21 +749,17 @@
     const container = document.getElementById('cartItemsContainer');
     const subtotalEl = document.getElementById('subtotal');
     const totalEl = document.getElementById('cartTotal');
-    const adaEquivalentEl = document.getElementById('adaEquivalent');
-    const amountInput = document.getElementById('amount');
+    // const amountInput = document.getElementById('amount');
 
     if (!cartData.items || cartData.items.length === 0) {
       container.innerHTML = `
         <div class="empty-cart">
-          <p style="margin-bottom: 15px;">Your cart is empty. Please go back to the store and add items.</p>
-          <a href="index.html" style="display: inline-block; padding: 12px 24px; background: linear-gradient(135deg, #ff6b35 0%, #ff8c42 100%); color: white; border-radius: 10px; text-decoration: none; font-weight: 500;">
-            Go to Store
-          </a>
+          <p>Your cart is empty. Please go back to the store and add items.</p>
+          <a href="index.html">Browse Products</a>
         </div>
       `;
       subtotalEl.textContent = '₳0.00';
       totalEl.textContent = '₳0.00';
-      adaEquivalentEl.textContent = '0 ADA';
       amountInput.value = '';
       return;
     }
@@ -577,7 +782,6 @@
     
     // Calculate ADA equivalent
     const adaAmount = (total / adaPrice).toFixed(2);
-    adaEquivalentEl.textContent = `${adaAmount} ADA`;
     amountInput.value = adaAmount;
     
     console.log('Cart rendered successfully. Total:', total);
@@ -591,8 +795,8 @@
     // adaPrice = data.cardano.usd;
     
     // For now, using mock data
-    adaPrice = 0.45 + (Math.random() * 0.05 - 0.025); // Simulate price fluctuation
-    renderCart();
+    // adaPrice = 0.45 + (Math.random() * 0.05 - 0.025); // Simulate price fluctuation
+    // renderCart();
   }
 
   // Initialize cart on page load
